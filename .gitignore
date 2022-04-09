@@ -1,0 +1,11 @@
+# junk
+.DS_Store
+
+# debug
+*.log
+*.stackdump
+
+# Artifacts
+/out/
+*.txt
+genprime
