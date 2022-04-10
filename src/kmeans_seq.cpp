@@ -7,8 +7,6 @@
 #include "utils/parse_input.h"
 #include "utils/random.h"
 
-#define MAX_THREAD_NUM 100
-
 static inline double pairwise_distance(std::vector<double> &v1, std::vector<double> &v2) {
     double sum = 0;
     for (int i = 0; i < (int) v1.size(); i++) {
