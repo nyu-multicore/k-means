@@ -30,7 +30,7 @@ make
 
 This would build different versions of executables:
 
-- kmeans_seq
+- kmeans_seq: basic sequential version
 
 ## Executable Usage
 

@@ -86,7 +86,7 @@ recompute_centers(std::vector<std::vector<double>> &centers, std::vector<std::ve
 }
 
 int main(int argc, char **argv) {
-    ParsedArgs args = parse_args(argc, argv, "A sequential version of K-Means clustering");
+    ParsedArgs args = parse_args(argc, argv, "A basic sequential version of K-Means clustering");
     auto data = parse_input(args.input_filename);
 
     int cycle_no = 0;
