@@ -25,7 +25,7 @@ module load gcc-9.2
 
 ```bash
 cmake -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
-cmake --build cmake-build-release
+cmake --build cmake-build-release --config Release
 ```
 
 This would build and generate different versions of executables in the folder `cmake-build-release`.
