@@ -1,6 +1,7 @@
 #include <iostream>
 #include "utils/parse_args.h"
 #include "utils/parse_input.h"
+#include "utils/kmeans_helper.h"
 
 #define MAX_THREAD_NUM 100
 
@@ -8,19 +9,18 @@ int main(int argc, char **argv)
 {
   ParsedArgs args = parse_args(argc, argv, "A sequential version of K-Means clustering");
   auto data = parse_input(args.input_filename);
-  std::cout << data->size() << std::endl;
-  int i = 0;
-  for (auto &vec : *data)
+
+  std::vector<std::vector<double>> centers = pick_random_centers(*data, args.k);
+
+  for (auto &center : centers)
   {
-    i++;
-    if (i > 10)
-      break;
-    for (auto &val : vec)
+    for (auto &point : center)
     {
-      std::cout << val << " ";
+      std::cout << point << " ";
     }
     std::cout << std::endl;
   }
+
   delete data;
   return 0;
 }

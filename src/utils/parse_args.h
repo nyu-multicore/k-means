@@ -4,10 +4,12 @@
 #include <string>
 
 #define MAX_THREAD_NUM 100
+#define MAX_K 100
 
 struct ParsedArgs
 {
   int thread_count;
+  int k;
   std::string input_filename;
 };
 
