@@ -19,7 +19,7 @@ jobs:
         id: build_type_string
         uses: ASzc/change-string-case-action@v2
         with:
-          BUILD_TYPE_LOWER: $${ env.BUILD_TYPE }
+          string: $${ env.BUILD_TYPE }
 
       - name: Setup ENV
         run: |
@@ -47,7 +47,7 @@ jobs:
         id: build_type_string
         uses: ASzc/change-string-case-action@v2
         with:
-          BUILD_TYPE_LOWER: $${ env.BUILD_TYPE }
+          string: $${ env.BUILD_TYPE }
 
       - name: Setup ENV
         run: |
@@ -58,7 +58,7 @@ jobs:
         run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
       - name: Build
-        run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
+        run: cmake --build ${{ env.BUILD_DIR }}
 
       - name: Test
         timeout-minutes: 2
