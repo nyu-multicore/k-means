@@ -39,7 +39,7 @@ jobs:
       - name: Setup ENV
         run: |
           echo "BUILD_TYPE_LOWER=${BUILD_TYPE,,}" >> ${GITHUB_ENV}
-          echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${{ env.BUILD_TYPE_LOWER }}" >> ${GITHUB_ENV}
+          echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${BUILD_TYPE_LOWER}" >> ${GITHUB_ENV}
 
       - name: Configure CMake
         run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
