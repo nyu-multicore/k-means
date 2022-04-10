@@ -19,7 +19,7 @@ jobs:
         id: build_type_string
         uses: ASzc/change-string-case-action@v2
         with:
-          string: $${ env.BUILD_TYPE }
+          string: ${{ env.BUILD_TYPE }}
 
       - name: Setup ENV
         run: |
@@ -47,7 +47,7 @@ jobs:
         id: build_type_string
         uses: ASzc/change-string-case-action@v2
         with:
-          string: $${ env.BUILD_TYPE }
+          string: ${{ env.BUILD_TYPE }}
 
       - name: Setup ENV
         run: |
