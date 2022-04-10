@@ -6,7 +6,11 @@ Parallel K-Means(H-Means) Implementation in OpenMP.
 
 - CMake 3.17+
 - GCC 9.2+
-- OpenMPI 4+
+- OpenMPI 3+
+
+## Recommended IDE
+
+CLion 2021.3: [Download](https://www.jetbrains.com/clion/)
 
 ## Getting Started
 
