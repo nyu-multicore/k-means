@@ -5,12 +5,6 @@
 *.log
 *.stackdump
 
-# cache
-CMakeCache.txt
-/CMakeFiles/
-
 # artifacts
-/Makefile
 /cmake-build-debug/
 /cmake-build-release/
-/kmeans_seq

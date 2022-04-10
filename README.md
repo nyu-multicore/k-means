@@ -24,25 +24,27 @@ module load gcc-9.2
 ### Build
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release
+cmake -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+cmake --build cmake-build-release --config Release
 make
 ```
 
-This would build different versions of executables:
+This would build and generate different versions of executables in the folder `cmake-build-release`.
 
 - kmeans_seq: basic sequential version
 
 ## Executable Usage
 
-Use `./<kmeans_version> -h` to see the usage:
+Use `./cmake-build-release/<kmeans_version> -h` to see the usage:
 
 ```
-usage: ./<kmeans_version> t k filename
+
+usage: ./cmake-build-release/<kmeans_version> t k filename
 
 positional arguments:
-  t          the number of threads, 0 < t <= 100
-  k          the number of clusters, 1 < k <= 100
-  filename   the name of the input file that contains data vectors
+t the number of threads, 0 < t <= 100 k the number of clusters, 1 < k <= 100 filename the name of the input file that
+contains data vectors
+
 ```
 
 Argument `k` is only valid for parallel versions, and is ignored by the sequential version.
@@ -50,9 +52,9 @@ Argument `k` is only valid for parallel versions, and is ignored by the sequenti
 Example:
 
 ```bash
-./kmeans_seq 1 10 data/dataset-1000000.txt
+./cmake-build-release/kmeans_seq 1 10 data/dataset-1000000.txt
 ```
 
 ```bash
-./kmeans 10 10 data/dataset-1000000.txt
+./cmake-build-release/kmeans 10 10 data/dataset-1000000.txt
 ```
