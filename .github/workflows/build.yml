@@ -24,7 +24,7 @@ jobs:
         run: cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
       - name: Build
-        run: cmake --build $BUILD_DIR --config ${env.BUILD_TYPE}
+        run: cmake --build $BUILD_DIR --config ${BUILD_TYPE}
 
       - name: Test
         run: |
@@ -45,7 +45,7 @@ jobs:
         run: cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
       - name: Build
-        run: cmake --build $BUILD_DIR --config ${env.BUILD_TYPE}
+        run: cmake --build $BUILD_DIR --config ${BUILD_TYPE}
 
       - name: Test
         run: |
