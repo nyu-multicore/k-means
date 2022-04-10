@@ -3,11 +3,11 @@
 #include <iostream>
 
 void print_help(std::string executable, std::string description) {
-    std::cout << "usage: " << executable << " t filename" << std::endl << std::endl;
+    std::cout << "usage: " << executable << " t k filename" << std::endl << std::endl;
     std::cout << description << std::endl << std::endl;
     std::cout << "positional arguments:" << std::endl;
     std::cout << "  t          the number of threads, 0 < t <= " << MAX_THREAD_NUM << std::endl;
-    std::cout << "  tol        the tolerance for stopping, 0 < tol <= " << MAX_TOL << std::endl;
+    std::cout << "  k          the number of clusters, 1 < k <= " << MAX_K << std::endl;
     std::cout << "  filename   the name of the input file that contains data vectors" << std::endl;
 }
 

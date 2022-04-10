@@ -13,3 +13,4 @@ CMakeCache.txt
 /Makefile
 /cmake-build-debug/
 /cmake-build-release/
+/kmeans_seq
