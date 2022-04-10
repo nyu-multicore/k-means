@@ -5,12 +5,12 @@
 
 #define MAX_THREAD_NUM 100
 #define MAX_K 100
+#define MAX_TOL 1.0
 
-struct ParsedArgs
-{
-  int thread_count;
-  int k;
-  std::string input_filename;
+struct ParsedArgs {
+    int thread_count;
+    int k;
+    std::string input_filename;
 };
 
 void print_help(std::string executable, std::string description);
