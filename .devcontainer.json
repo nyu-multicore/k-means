@@ -1,10 +1,10 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.224.2/containers/ubuntu
 {
-    "name": "OpenMP",
-    "image": "dizy/nyu-multicore-lab-1-dev:latest",
-    "extensions": [
-      "VisualVisualStudioExptTeam.vscodeintellicodeStudio",
-      "ms-vscode.cpptools-extension-pack"
-    ]
-  }
+  "name": "OpenMP",
+  "image": "dizy/nyu-multicore-project-dev:latest",
+  "extensions": [
+    "VisualVisualStudioExptTeam.vscodeintellicodeStudio",
+    "ms-vscode.cpptools-extension-pack"
+  ]
+}

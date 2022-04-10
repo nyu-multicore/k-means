@@ -1,13 +1,17 @@
-GCC_BIN=gcc
-GCC_STD=c99
+GPP_BIN=g++
+GPP_STD=c++17
 
 .PHONY: clean
 
-all: kmeans
+all: kmeans_seq kmeans
 
-kmeans: src/kmeans.c
+kmeans_seq: src/kmeans_seq.cpp
 	mkdir -p out
-	$(GCC_BIN) -g -fopenmp -Wall -o out/kmeans -std=$(GCC_STD) src/kmeans.c -lm
+	$(GPP_BIN) -g -fopenmp -Wall -o out/kmeans_seq -std=$(GPP_STD) src/utils/* src/kmeans_seq.cpp -lm
+
+kmeans: src/kmeans.cpp
+	mkdir -p out
+	$(GPP_BIN) -g -fopenmp -Wall -o out/kmeans -std=$(GPP_STD) src/utils/* src/kmeans.cpp -lm
 
 clean:
 	rm -rf out
