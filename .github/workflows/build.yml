@@ -18,12 +18,17 @@ jobs:
       - name: Setup ENV
         run: |
           echo "BUILD_TYPE_LOWER=${BUILD_TYPE,,}" >> ${GITHUB_ENV}
+          echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${{ env.BUILD_TYPE_LOWER }}" >> ${GITHUB_ENV}
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        run: cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} --config ${{ env.BUILD_TYPE }}
+        run: cmake --build $BUILD_DIR --config ${env.BUILD_TYPE}
+
+      - name: Test
+        run: |
+          $BUILD_DIR/kmeans_seq 1 10 data/dataset-10000.txt
 
   build-windows:
     runs-on: windows-latest
@@ -34,9 +39,14 @@ jobs:
       - name: Setup ENV
         run: |
           echo "BUILD_TYPE_LOWER=${BUILD_TYPE,,}" >> ${GITHUB_ENV}
+          echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${{ env.BUILD_TYPE_LOWER }}" >> ${GITHUB_ENV}
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        run: cmake -B $BUILD_DIR -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} --config ${{ env.BUILD_TYPE }}
+        run: cmake --build $BUILD_DIR --config ${env.BUILD_TYPE}
+
+      - name: Test
+        run: |
+          $BUILD_DIR/kmeans_seq.exe 1 10 data/dataset-10000.txt
