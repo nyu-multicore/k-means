@@ -30,7 +30,7 @@ jobs:
         run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
       - name: Build
-        run: cmake --build ${{ env.BUILD_DIR }}
+        run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
 
       - name: Test
         timeout-minutes: 2
@@ -58,9 +58,9 @@ jobs:
         run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
       - name: Build
-        run: cmake --build ${{ env.BUILD_DIR }}
+        run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
 
       - name: Test
         timeout-minutes: 2
         run: |
-          ${{ env.BUILD_DIR }}/kmeans_seq.exe 1 10 data/dataset-10000.txt
+          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_seq.exe 1 10 data/dataset-10000.txt
