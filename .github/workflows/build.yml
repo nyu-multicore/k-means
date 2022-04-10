@@ -15,16 +15,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Transform BUILD_TYPE string
+        id: build_type_string
+        uses: ASzc/change-string-case-action@v2
+        with:
+          BUILD_TYPE_LOWER: $${ env.BUILD_TYPE }
+
       - name: Setup ENV
         run: |
-          echo "BUILD_TYPE_LOWER=${BUILD_TYPE,,}" >> ${GITHUB_ENV}
+          echo "BUILD_TYPE_LOWER=${{ steps.build_type_string.outputs.lowercase }}" >> ${GITHUB_ENV}
           echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${{ env.BUILD_TYPE_LOWER }}" >> ${GITHUB_ENV}
 
       - name: Configure CMake
         run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
       - name: Build
-        run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
+        run: cmake --build ${{ env.BUILD_DIR }}
 
       - name: Test
         timeout-minutes: 2
@@ -37,9 +43,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Transform BUILD_TYPE string
+        id: build_type_string
+        uses: ASzc/change-string-case-action@v2
+        with:
+          BUILD_TYPE_LOWER: $${ env.BUILD_TYPE }
+
       - name: Setup ENV
         run: |
-          echo "BUILD_TYPE_LOWER=${BUILD_TYPE,,}" >> $env:GITHUB_ENV
+          echo "BUILD_TYPE_LOWER=${{ steps.build_type_string.outputs.lowercase }}" >> $env:GITHUB_ENV
           echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${{ env.BUILD_TYPE_LOWER }}" >> $env:GITHUB_ENV
 
       - name: Configure CMake
