@@ -15,11 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup ENV
+        run: |
+          echo "BUILD_TYPE_LOWER=${BUILD_TYPE,,}" >> ${GITHUB_ENV}
+
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/cmake-build-${{lowercase(env.BUILD_TYPE)}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/cmake-build-${{lowercase(env.BUILD_TYPE)}} --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} --config ${{ env.BUILD_TYPE }}
 
   build-windows:
     runs-on: windows-latest
@@ -27,8 +31,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup ENV
+        run: |
+          echo "BUILD_TYPE_LOWER=${BUILD_TYPE,,}" >> ${GITHUB_ENV}
+
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/cmake-build-${{lowercase(env.BUILD_TYPE)}} -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/cmake-build-${{lowercase(env.BUILD_TYPE)}} --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/cmake-build-${{ env.BUILD_TYPE_LOWER }} --config ${{ env.BUILD_TYPE }}
