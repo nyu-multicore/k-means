@@ -1,6 +1,6 @@
 # k-means
 
-Parallel K-Means(H-Means) Implementation in OpenMP.
+Parallel K-Means(H-Means) implementations in OpenMP.
 
 ## Prerequisites
 
