@@ -1,10 +1,10 @@
 # junk
 .DS_Store
-.vscode/c_cpp_properties.json
 
 # debug
 *.log
 *.stackdump
 
 # Artifacts
-/out/
+/cmake-build-debug/
+/cmake-build-release/
