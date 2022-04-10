@@ -49,14 +49,14 @@ static inline int get_closest_center(std::vector<std::vector<double>> &centers, 
     return closest_center;
 }
 
-static inline bool
+static inline int
 assign_points_to_centers(std::vector<std::vector<double>> &centers, std::vector<std::vector<double>> &data,
                          std::vector<int> &assignments) {
-    bool changed = false;
+    int changed = 0;
     for (int i = 0; i < (int) data.size(); i++) {
         int new_assignment = get_closest_center(centers, data[i]);
         if (new_assignment != assignments[i]) {
-            changed = true;
+            changed++;
             assignments[i] = new_assignment;
         }
     }
@@ -99,9 +99,9 @@ int main(int argc, char **argv) {
 
     while (true) {
         cycle_no++;
-        bool changed = assign_points_to_centers(centers, *data, assignments);
+        int changed = assign_points_to_centers(centers, *data, assignments);
         std::cout << "Cycle #" << cycle_no << ": changed = " << changed << std::endl;
-        if (!changed) {
+        if (changed == 0) {
             break;
         }
         recompute_centers(centers, *data, assignments);
