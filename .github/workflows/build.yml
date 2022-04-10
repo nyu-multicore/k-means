@@ -27,6 +27,7 @@ jobs:
         run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
 
       - name: Test
+        timeout-minutes: 2
         run: |
           $BUILD_DIR/kmeans_seq 1 10 data/dataset-10000.txt
 
@@ -48,5 +49,6 @@ jobs:
         run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
 
       - name: Test
+        timeout-minutes: 2
         run: |
-          $BUILD_DIR/kmeans_seq.exe 1 10 data/dataset-10000.txt
+          ${{ env.BUILD_DIR }}/kmeans_seq.exe 1 10 data/dataset-10000.txt
