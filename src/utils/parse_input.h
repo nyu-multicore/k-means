@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
-std::vector<std::vector<double>> *parse_input(std::string filename);
+std::vector<std::vector<double>> *parse_input(const std::string &filename);
+
+std::vector<int> *parse_labels_input(const std::string &filename);
 
 #endif

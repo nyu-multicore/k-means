@@ -6,14 +6,8 @@
 #include "utils/parse_args.h"
 #include "utils/parse_input.h"
 #include "utils/random.h"
+#include "utils/kmeans_helper.h"
 
-static inline double pairwise_distance(std::vector<double> &v1, std::vector<double> &v2) {
-    double sum = 0;
-    for (int i = 0; i < (int) v1.size(); i++) {
-        sum += (v1[i] - v2[i]) * (v1[i] - v2[i]);
-    }
-    return sqrt(sum);
-}
 
 static inline std::vector<std::vector<double>> pick_random_centers(std::vector<std::vector<double>> &data, int k) {
     std::vector<std::vector<double>> centers;
@@ -86,6 +80,7 @@ recompute_centers(std::vector<std::vector<double>> &centers, std::vector<std::ve
 int main(int argc, char **argv) {
     ParsedArgs args = parse_args(argc, argv, "A basic sequential version of K-Means clustering");
     auto data = parse_input(args.input_filename);
+    auto reference_assignments = parse_labels_input(args.labels_filename);
 
     int cycle_no = 0;
 
@@ -106,8 +101,13 @@ int main(int argc, char **argv) {
     }
 
     finish_time = omp_get_wtime(); // record finish time
+
+    double nmi = compute_assignments_nmi(assignments, *reference_assignments, args.k);
+    std::cout << "NMI: " << nmi << std::endl;
+
     std::cout << "Algorithm finished in: " << finish_time - start_time << " sec" << std::endl;
 
     delete data;
+    delete reference_assignments;
     return 0;
 }
