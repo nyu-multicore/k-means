@@ -46,7 +46,7 @@ positional arguments:
   labels_file  the name of the file that contains data labels
 ```
 
-Argument `k` is only valid for parallel versions, and is ignored by the sequential version.
+Argument `t` is only valid for parallel versions, and is ignored by the sequential version.
 
 Example:
 
