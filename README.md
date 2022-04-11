@@ -40,9 +40,10 @@ Use `./cmake-build-release/<kmeans_version> -h` to see the usage:
 usage: ./cmake-build-release/<kmeans_version> t k filename
 
 positional arguments:
-  t          the number of threads, 0 < t <= 100
-  k          the number of clusters, 1 < k <= 100
-  filename   the name of the input file that contains data vectors
+  t            the number of threads, 0 < t <= 100
+  k            the number of clusters, 1 < k <= 100
+  filename     the name of the input file that contains data vectors
+  labels_file  the name of the file that contains data labels
 ```
 
 Argument `k` is only valid for parallel versions, and is ignored by the sequential version.
