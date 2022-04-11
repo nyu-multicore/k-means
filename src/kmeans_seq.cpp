@@ -81,6 +81,7 @@ int main(int argc, char **argv) {
     ParsedArgs args = parse_args(argc, argv, "A basic sequential version of K-Means clustering");
     auto data = parse_input(args.input_filename);
     auto reference_assignments = parse_labels_input(args.labels_filename);
+    std::vector<int> assignments(data->size(), -1);
 
     int cycle_no = 0;
 
@@ -88,7 +89,6 @@ int main(int argc, char **argv) {
     start_time = omp_get_wtime(); // record start time
 
     std::vector<std::vector<double>> centers = pick_random_centers(*data, args.k);
-    std::vector<int> assignments(data->size(), -1);
 
     while (true) {
         cycle_no++;
