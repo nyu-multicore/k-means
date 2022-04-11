@@ -51,9 +51,9 @@ Argument `t` is only valid for parallel versions, and is ignored by the sequenti
 Example:
 
 ```bash
-./cmake-build-release/kmeans_seq 1 10 data/dataset-1000000.txt
+./cmake-build-release/kmeans_seq 1 10 data/dataset-1000000.txt data/dataset-1000000.10.kmeans.txt
 ```
 
 ```bash
-./cmake-build-release/kmeans 10 10 data/dataset-1000000.txt
+./cmake-build-release/kmeans 10 10 data/dataset-1000000.txt data/dataset-1000000.10.kmeans.txt
 ```
