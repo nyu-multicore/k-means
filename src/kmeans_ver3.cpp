@@ -123,7 +123,7 @@ class SetOfMeans
             }
         }
 
-        if(isnan(intercluster_distance)){
+        if(std::isnan(intercluster_distance)){
             intercluster_distance = 0;
         }
     }
