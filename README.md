@@ -31,13 +31,17 @@ cmake --build cmake-build-release --config Release
 This would build and generate different versions of executables in the folder `cmake-build-release`.
 
 - kmeans_seq: basic sequential version
+- kmeans_ver3: parallel implementation of [_Accelerating K-Means Clustering with Parallel Implementations and GPU
+  computing_](https://ieeexplore.ieee.org/document/7322467)
+- kmeans_par1_1: parallel versions including the parallelization of the point assignments
+- kmeans_par1_2: parallel versions including the parallelization of the point assignments and center recompute
 
 ## Executable Usage
 
 Use `./cmake-build-release/<kmeans_version> -h` to see the usage:
 
 ```text
-usage: ./cmake-build-release/<kmeans_version> t k filename
+usage: ./cmake-build-release/<kmeans_version> t k filename labels_file
 
 positional arguments:
   t            the number of threads, 0 < t <= 100
