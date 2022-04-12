@@ -36,6 +36,8 @@ jobs:
         timeout-minutes: 2
         run: |
           $BUILD_DIR/kmeans_seq 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          $BUILD_DIR/kmeans_ver3 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+  
 
   build-windows:
     runs-on: windows-latest
@@ -64,3 +66,4 @@ jobs:
         timeout-minutes: 2
         run: |
           ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_seq.exe 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_ver3.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
