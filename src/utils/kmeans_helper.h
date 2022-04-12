@@ -22,8 +22,8 @@ static inline std::vector<std::unordered_set<int>> *get_clusters_by_assignments(
     return clusters;
 }
 
-static inline int get_intersection_size(std::unordered_set<int> &s1, std::unordered_set<int> &s2) {
-    int intersection_size = 0;
+static inline long long get_intersection_size(std::unordered_set<int> &s1, std::unordered_set<int> &s2) {
+    long long intersection_size = 0;
     for (int it: s1) {
         if (s2.find(it) != s2.end()) {
             intersection_size++;
@@ -44,25 +44,34 @@ static inline double compute_assignments_nmi(std::vector<int> &a1, std::vector<i
     double num = 0;
     for (auto &set1: *clusters1) {
         for (auto &set2: *clusters2) {
-            int n_i = (int) set1.size();
-            int n_j = (int) set2.size();
-            int n_ij = get_intersection_size(set1, set2);
+            auto n_i = (long long) set1.size();
+            auto n_j = (long long) set2.size();
+            long long n_ij = get_intersection_size(set1, set2);
             if (n_ij == 0) {
                 continue;
             }
-            double log_term = log((double) n_ij * (double) a1.size() / ((double) n_i * n_j));
-            num += (double) n_ij * log_term;
+            double log_term = log((double) n_ij * (double) a1.size() / ((double) n_i * (double) n_j));
+            double item = (double) n_ij * log_term;
+            if (!isnan(item)) {
+                num += item;
+            }
         }
     }
     num *= -2;
     double den = 0;
     for (auto &set1: *clusters1) {
         int n_i = (int) set1.size();
-        den += (double) n_i * log((double) n_i / (double) a1.size());
+        double item = (double) n_i * log((double) n_i / (double) a1.size());
+        if (!isnan(item)) {
+            den += item;
+        }
     }
     for (auto &set2: *clusters2) {
         int n_j = (int) set2.size();
-        den += (double) n_j * log((double) n_j / (double) a2.size());
+        double item = (double) n_j * log((double) n_j / (double) a2.size());
+        if (!isnan(item)) {
+            den += item;
+        }
     }
     delete clusters1;
     delete clusters2;
