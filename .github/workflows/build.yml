@@ -7,9 +7,6 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
   build-linux:
     runs-on: ubuntu-latest
@@ -17,34 +14,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Transform BUILD_TYPE string
-        id: build_type_string
-        uses: ASzc/change-string-case-action@v2
-        with:
-          string: ${{ env.BUILD_TYPE }}
-
-      - name: Setup ENV
-        run: |
-          echo "BUILD_TYPE_LOWER=${{ steps.build_type_string.outputs.lowercase }}" >> ${GITHUB_ENV}
-          echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${{ env.BUILD_TYPE_LOWER }}" >> ${GITHUB_ENV}
-
       - name: Configure CMake
-        run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        run: cmake -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
-        run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
+        run: cmake --build cmake-build-release --config Release
 
       - name: Test
         timeout-minutes: 2
         run: |
           echo "Running kmeans_seq..."
-          $BUILD_DIR/kmeans_seq 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/kmeans_seq 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_ver3..."
-          $BUILD_DIR/kmeans_ver3 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/kmeans_ver3 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_par1_1..."
-          $BUILD_DIR/kmeans_par1_1 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/kmeans_par1_1 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_par1_2..."
-          $BUILD_DIR/kmeans_par1_2 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/kmeans_par1_2 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
   
 
   build-windows:
@@ -53,31 +39,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Transform BUILD_TYPE string
-        id: build_type_string
-        uses: ASzc/change-string-case-action@v2
-        with:
-          string: ${{ env.BUILD_TYPE }}
-
-      - name: Setup ENV
-        run: |
-          echo "BUILD_TYPE_LOWER=${{ steps.build_type_string.outputs.lowercase }}" >> $env:GITHUB_ENV
-          echo "BUILD_DIR=${{ github.workspace }}/cmake-build-${{ env.BUILD_TYPE_LOWER }}" >> $env:GITHUB_ENV
-
       - name: Configure CMake
-        run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        run: cmake -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
-        run: cmake --build ${{ env.BUILD_DIR }} --config ${{ env.BUILD_TYPE }}
+        run: cmake --build cmake-build-release --config Release
 
       - name: Test
         timeout-minutes: 2
         run: |
           echo "Running kmeans_seq..."
-          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_seq.exe 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/Release/kmeans_seq.exe 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_ver3..."
-          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_ver3.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/Release/kmeans_ver3.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_par1_1..."
-          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_par1_1.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/Release/kmeans_par1_1.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_par1_2..."
-          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_par1_2.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          cmake-build-release/Release/kmeans_par1_2.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
