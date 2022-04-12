@@ -44,34 +44,34 @@ static inline int get_closest_center(std::vector<std::vector<double>> &centers, 
 
 static inline int
 assign_points_to_centers(std::vector<std::vector<double>> &centers, std::vector<std::vector<double>> &data,
-                         std::vector<int> &assignments,ParsedArgs args) {
+                         std::vector<int> &assignments, ParsedArgs args) {
     int changed = 0;
-    int thread_cnt=args.thread_count;
-    int* changed_pri=new int[thread_cnt];
-    for(int i=0;i<thread_cnt;i++){
-        changed_pri[i]=0;
+    int thread_cnt = args.thread_count;
+    int *changed_pri = new int[thread_cnt];
+    for (int i = 0; i < thread_cnt; i++) {
+        changed_pri[i] = 0;
     }
-    int dataperthr=(int) data.size()/thread_cnt;
+    int dataperthr = (int) data.size() / thread_cnt;
     omp_set_num_threads(thread_cnt);
-    #pragma omp parallel for
+#pragma omp parallel for
     //#pragma omp parallel num_threads(thread_cnt)
-    
-        
-        //int start=dataperthr*my_rank;
-        //int end=my_rank==(thread_cnt-1)?(int)data.size():dataperthr*(my_rank+1);
-        for (int i = 0; i < (int)data.size(); i++) {
-            int my_rank=omp_get_thread_num();
+
+
+    //int start=dataperthr*my_rank;
+    //int end=my_rank==(thread_cnt-1)?(int)data.size():dataperthr*(my_rank+1);
+    for (int i = 0; i < (int) data.size(); i++) {
+        int my_rank = omp_get_thread_num();
         //(int i = start; i < end; i++) {
-            int new_assignment = get_closest_center(centers, data[i]);
-            if (new_assignment != assignments[i]) {
-                //changed_pri[my_rank]++;
-                changed_pri[my_rank]++;
-                assignments[i] = new_assignment;
-            }
+        int new_assignment = get_closest_center(centers, data[i]);
+        if (new_assignment != assignments[i]) {
+            //changed_pri[my_rank]++;
+            changed_pri[my_rank]++;
+            assignments[i] = new_assignment;
         }
-    
-    for(int i=0;i<thread_cnt;i++){
-        changed+=changed_pri[i];
+    }
+
+    for (int i = 0; i < thread_cnt; i++) {
+        changed += changed_pri[i];
     }
     return changed;
 }
@@ -103,40 +103,40 @@ int main(int argc, char **argv) {
     auto data = parse_input(args.input_filename);
     auto reference_assignments = parse_labels_input(args.labels_filename);
     std::vector<int> assignments(data->size(), -1);
-    int threads=args.thread_count;
+    int threads = args.thread_count;
     //std::cout<<threads;
     int cycle_no = 0;
     double start_time, finish_time;
     //int* tempt_change=new int[threads];
     //std::vector<std::vector<double>>* centers_thread=new std::vector<std::vector<double>>[threads];
-    std::vector<std::vector<double>> centers=pick_random_centers(*data, args.k);
+    std::vector<std::vector<double>> centers = pick_random_centers(*data, args.k);
     //std::cout<<"certer1:"<<centers[0][0];
     start_time = omp_get_wtime(); // record start time
-    int min=INT_MAX;
-    
-    #pragma omp parallel num_threads(threads)
+    int min = INT_MAX;
+
+#pragma omp parallel num_threads(threads)
     {
-        int my_rank=omp_get_thread_num();
+        int my_rank = omp_get_thread_num();
         std::vector<int> assignments_pri(data->size(), -1);
-        for(int i=0;i<assignments_pri.size();i++)
-            assignments_pri[i]=0;
-        std::vector<std::vector<double>> centers_thr=pick_random_centers(*data, args.k);
+        for (int i = 0; i < assignments_pri.size(); i++)
+            assignments_pri[i] = 0;
+        std::vector<std::vector<double>> centers_thr = pick_random_centers(*data, args.k);
         //std::cout<<centers_thr[0][0]<<"\n";
         //centers_thread[my_rank]=centers;
-        int changed_cur=0;
-        for(int i=0;i<5;i++) {
-            changed_cur = assign_points_to_centers(centers_thr, *data, assignments_pri,args);
+        int changed_cur = 0;
+        for (int i = 0; i < 5; i++) {
+            changed_cur = assign_points_to_centers(centers_thr, *data, assignments_pri, args);
             //std::cout<<changed_cur<<"\n";
             recompute_centers(centers_thr, *data, assignments_pri);
             //std::cout<<"recompute"<<centers_thr[0][0]<<"\n";
         }
-        #pragma critical
+#pragma critical
         {
-            if(changed_cur<min){
-                min=changed_cur;
+            if (changed_cur < min) {
+                min = changed_cur;
                 //std::cout<<"min_changed_cur"<<min<<"\n";
-                centers=centers_thr;
-                assignments=assignments_pri;
+                centers = centers_thr;
+                assignments = assignments_pri;
                 //std::cout<<"centers"<<centers[0][0]<<"\n";
             }
         }
@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
     //std::vector<std::vector<double>> centers = centers_thread[minPos];
     while (true) {
         cycle_no++;
-        int changed = assign_points_to_centers(centers, *data, assignments,args);
+        int changed = assign_points_to_centers(centers, *data, assignments, args);
         std::cout << "Cycle #" << cycle_no << ": changed = " << changed << std::endl;
         if (changed == 0) {
             break;

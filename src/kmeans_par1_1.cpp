@@ -43,21 +43,21 @@ static inline int get_closest_center(std::vector<std::vector<double>> &centers, 
 
 static inline int
 assign_points_to_centers(std::vector<std::vector<double>> &centers, std::vector<std::vector<double>> &data,
-                         std::vector<int> &assignments,ParsedArgs args) {
+                         std::vector<int> &assignments, ParsedArgs args) {
     int changed = 0;
-    int thread_cnt=args.thread_count;
-    int* changed_pri=new int[thread_cnt];
-    for(int i=0;i<thread_cnt;i++){
-        changed_pri[i]=0;
+    int thread_cnt = args.thread_count;
+    int *changed_pri = new int[thread_cnt];
+    for (int i = 0; i < thread_cnt; i++) {
+        changed_pri[i] = 0;
     }
-    int dataperthr=(int) data.size()/thread_cnt;
+    int dataperthr = (int) data.size() / thread_cnt;
     //omp_set_num_threads(thread_cnt);
     //#pragma omp parallel for
-    #pragma omp parallel num_threads(thread_cnt)
+#pragma omp parallel num_threads(thread_cnt)
     {
-        int my_rank=omp_get_thread_num();
-        int start=dataperthr*my_rank;
-        int end=my_rank==(thread_cnt-1)?(int)data.size():dataperthr*(my_rank+1);
+        int my_rank = omp_get_thread_num();
+        int start = dataperthr * my_rank;
+        int end = my_rank == (thread_cnt - 1) ? (int) data.size() : dataperthr * (my_rank + 1);
         //for (int i = 0; i < (int)data.size(); i++) {
         for (int i = start; i < end; i++) {
             int new_assignment = get_closest_center(centers, data[i]);
@@ -67,8 +67,8 @@ assign_points_to_centers(std::vector<std::vector<double>> &centers, std::vector<
             }
         }
     }
-    for(int i=0;i<thread_cnt;i++){
-        changed+=changed_pri[i];
+    for (int i = 0; i < thread_cnt; i++) {
+        changed += changed_pri[i];
     }
     return changed;
 }
@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
 
     while (true) {
         cycle_no++;
-        int changed = assign_points_to_centers(centers, *data, assignments,args);
+        int changed = assign_points_to_centers(centers, *data, assignments, args);
         std::cout << "Cycle #" << cycle_no << ": changed = " << changed << std::endl;
         if (changed == 0) {
             break;
