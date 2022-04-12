@@ -37,8 +37,14 @@ jobs:
       - name: Test
         timeout-minutes: 2
         run: |
+          echo "Running kmeans_seq..."
           $BUILD_DIR/kmeans_seq 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_ver3..."
           $BUILD_DIR/kmeans_ver3 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par1_1..."
+          $BUILD_DIR/kmeans_par1_1 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par1_2..."
+          $BUILD_DIR/kmeans_par1_2 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
   
 
   build-windows:
@@ -67,5 +73,11 @@ jobs:
       - name: Test
         timeout-minutes: 2
         run: |
+          echo "Running kmeans_seq..."
           ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_seq.exe 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_ver3..."
           ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_ver3.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par1_1..."
+          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_par1_1.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par1_2..."
+          ${{ env.BUILD_DIR }}/${{ env.BUILD_TYPE }}/kmeans_par1_2.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
