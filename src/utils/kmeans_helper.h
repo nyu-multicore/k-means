@@ -52,7 +52,7 @@ static inline double compute_assignments_nmi(std::vector<int> &a1, std::vector<i
             }
             double log_term = log((double) n_ij * (double) a1.size() / ((double) n_i * (double) n_j));
             double item = (double) n_ij * log_term;
-            if (!isnan(item)) {
+            if (!std::isnan(item)) {
                 num += item;
             }
         }
@@ -62,14 +62,14 @@ static inline double compute_assignments_nmi(std::vector<int> &a1, std::vector<i
     for (auto &set1: *clusters1) {
         int n_i = (int) set1.size();
         double item = (double) n_i * log((double) n_i / (double) a1.size());
-        if (!isnan(item)) {
+        if (!std::isnan(item)) {
             den += item;
         }
     }
     for (auto &set2: *clusters2) {
         int n_j = (int) set2.size();
         double item = (double) n_j * log((double) n_j / (double) a2.size());
-        if (!isnan(item)) {
+        if (!std::isnan(item)) {
             den += item;
         }
     }
