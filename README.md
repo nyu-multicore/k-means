@@ -31,13 +31,17 @@ cmake --build cmake-build-release --config Release
 This would build and generate different versions of executables in the folder `cmake-build-release`.
 
 - kmeans_seq: basic sequential version
+- kmeans_ver3: parallel implementation of [_Accelerating K-Means Clustering with Parallel Implementations and GPU
+  computing_](https://ieeexplore.ieee.org/document/7322467)
+- kmeans_par1_1: parallel versions including the parallelization of the point assignments
+- kmeans_par1_2: parallel versions including the parallelization of the point assignments and center recompute
 
 ## Executable Usage
 
 Use `./cmake-build-release/<kmeans_version> -h` to see the usage:
 
 ```text
-usage: ./cmake-build-release/<kmeans_version> t k filename
+usage: ./cmake-build-release/<kmeans_version> t k filename labels_file
 
 positional arguments:
   t            the number of threads, 0 < t <= 100
@@ -56,4 +60,24 @@ Example:
 
 ```bash
 ./cmake-build-release/kmeans 10 10 data/dataset-1000000.txt data/dataset-1000000.10.kmeans.txt
+```
+
+## Run Experiments on Datasets
+
+A python script is available to run and time kmeans versions on datasets.
+
+After successfully building the executables, you can run the script with the following command:
+
+```bash
+python3 scripts/exp.py
+```
+
+This will automatically search for all the executables in the folder `cmake-build-release` and run them on all the
+datasets. It will run each version on each dataset with each thread count and each n_cluster, each for 10 times, the raw
+data will be save to path `data/experiment_raw.csv`. The averaged data will be save to path `data/experiment_avg.csv`.
+
+### To run only a specific version
+
+```bash
+python3 scripts/exp.py -e kmeans_ver3
 ```
