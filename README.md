@@ -61,3 +61,23 @@ Example:
 ```bash
 ./cmake-build-release/kmeans 10 10 data/dataset-1000000.txt data/dataset-1000000.10.kmeans.txt
 ```
+
+## Run Experiments on Datasets
+
+A python script is available to run and time kmeans versions on datasets.
+
+After successfully building the executables, you can run the script with the following command:
+
+```bash
+python3 scripts/exp.py
+```
+
+This will automatically search for all the executables in the folder `cmake-build-release` and run them on all the
+datasets. It will run each version on each dataset with each thread count and each n_cluster, each for 10 times, the raw
+data will be save to path `data/experiment_raw.csv`. The averaged data will be save to path `data/experiment_avg.csv`.
+
+### To run only a specific version
+
+```bash
+python3 scripts/exp.py -e kmeans_ver3
+```
