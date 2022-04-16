@@ -54,14 +54,14 @@ assign_points_to_centers(std::vector<std::vector<double>> &centers, std::vector<
 
 static inline void
 recompute_centers(std::vector<std::vector<double>> &centers, std::vector<std::vector<double>> &data,
-                  std::vector<int> &assignments) {
+                  std::vector<int> &assignments, int data_start, int data_end) {
     std::vector<int> center_counts = std::vector<int>(centers.size(), 0);
     for (auto &center: centers) {
         for (double &i: center) {
             i = 0;
         }
     }
-    for (int i = 0; i < (int) data.size(); i++) {
+    for (int i = data_start; i < data_end; i++) {
         center_counts[assignments[i]]++;
         for (int j = 0; j < (int) centers[assignments[i]].size(); j++) {
             centers[assignments[i]][j] += data[i][j];
@@ -142,7 +142,7 @@ compute(std::vector<std::vector<double>> &global_centers, std::vector<std::vecto
     auto local_centers = std::vector<std::vector<double>>(global_centers.size(),
                                                           std::vector<double>(global_centers[0].size(), 0));
     std::copy(global_centers.begin(), global_centers.end(), local_centers.begin());
-    recompute_centers(local_centers, data, assignments);
+    recompute_centers(local_centers, data, assignments, data_start, data_end);
     add_local_centers_to_global_ones(new_global_centers, local_centers);
 
     return perf(data, data_start, data_end, (int) data[0].size());
@@ -199,6 +199,14 @@ int main(int argc, char **argv) {
         }
         mean_global_centers(new_global_centers, args.thread_count);
         centers = new_global_centers;
+        for (auto &center: centers) {
+            std::cout << "(";
+            for (double &j: center) {
+                std::cout << j << ", ";
+            }
+            std::cout << ") ";
+        }
+        std::cout << std::endl;
     }
 
     finish_time = omp_get_wtime(); // record finish time
