@@ -130,7 +130,6 @@ compute_perf(std::vector<std::vector<double>> &data, std::vector<int> &assignmen
                                                                             std::vector<double>(dimension, 0.0));
     std::vector<int> num_of_elements = std::vector<int>(k, 0);
     printf("Computing performance...\n");
-#pragma omp parallel for thread_num(32)
     for (int i = 0; i < data.size(); i++) {
         if (i % 100000 == 0) {
             printf("loop1: %d\n", i);
