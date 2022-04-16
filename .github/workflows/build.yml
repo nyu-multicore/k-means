@@ -31,6 +31,8 @@ jobs:
           cmake-build-release/kmeans_par1_1 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_par1_2..."
           cmake-build-release/kmeans_par1_2 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_parakmeans..."
+          cmake-build-release/kmeans_parakmeans 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
   
 
   build-windows:
@@ -56,3 +58,6 @@ jobs:
           cmake-build-release/Release/kmeans_par1_1.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_par1_2..."
           cmake-build-release/Release/kmeans_par1_2.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_parakmeans..."
+          cmake-build-release/Release/kmeans_parakmeans.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+  
