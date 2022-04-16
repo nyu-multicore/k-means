@@ -41,15 +41,18 @@ static inline int get_closest_center(std::vector<std::vector<double>> &centers, 
     return closest_center;
 }
 
-static inline void
+static inline int
 assign_points_to_centers(std::vector<std::vector<double>> &centers, std::vector<std::vector<double>> &data,
                          std::vector<int> &assignments, int start, int end) {
+    int changed = 0;
     for (int i = start; i < end; i++) {
         int new_assignment = get_closest_center(centers, data[i]);
         if (new_assignment != assignments[i]) {
+            changed++;
             assignments[i] = new_assignment;
         }
     }
+    return changed;
 }
 
 static inline void
@@ -119,33 +122,56 @@ gCC(std::vector<std::vector<double>> &data, int start_index, int end_index, int 
 }
 
 static inline double
-perf(std::vector<std::vector<double>> &data, int start_index, int end_index, int dimension) {
-//    std::vector<double> performance = std::vector<double>(dimension, 0.0);
-    std::vector<double> FM = first_moment(data, start_index, end_index, dimension);
-    std::vector<double> SM = second_moment(data, start_index, end_index, dimension);
-    int number_of_elements = end_index - start_index + 1;
+compute_perf(std::vector<std::vector<double>> &data, std::vector<int> &assignments, int k, int dimension) {
+    std::vector<std::vector<double>> FMs = std::vector<std::vector<double>>(k,
+                                                                            std::vector<double>(dimension, 0.0));
+    std::vector<std::vector<double>> SMs = std::vector<std::vector<double>>(k,
+                                                                            std::vector<double>(dimension, 0.0));
+    std::vector<int> num_of_elements = std::vector<int>(k, 0);
+    printf("Computing performance...\n");
+#pragma omp parallel for thread_num(32)
+    for (int i = 0; i < data.size(); i++) {
+        if (i % 100000 == 0) {
+            printf("loop1: %d\n", i);
+        }
+        auto point = data[i];
+        for (int j = 0; j < dimension; j++) {
+            FMs[assignments[i]][j] += point[j];
+            SMs[assignments[i]][j] += pow(point[j], 2);
+        }
+        num_of_elements[assignments[i]]++;
+    }
+    printf("loop1: finished\n");
+
 
     double perf = 0.0;
 
-    for (int i = 0; i < dimension; i++) {
-        double perf_d = SM[i] - pow((FM[i]), 2) / (double) number_of_elements;
-        perf += pow(perf_d, 2);
+    for (int i = 0; i < k; i++) {
+        printf("loop2: %d\n", i);
+        double perf_c = 0.0;
+        for (int j = 0; j < dimension; j++) {
+            double perf_d = SMs[i][j] - pow(FMs[i][j], 2) / (double) num_of_elements[i];
+            if (std::isnan(perf_d)) {
+                perf_d = 0.0;
+            }
+            perf_c += perf_d;
+        }
+        perf += sqrt(perf_c);
     }
 
-    return sqrt(perf);
+    return perf;
 }
 
-static inline double
+static inline int
 compute(std::vector<std::vector<double>> &global_centers, std::vector<std::vector<double>> &new_global_centers,
         std::vector<int> &assignments, std::vector<std::vector<double>> &data, int data_start, int data_end) {
-    assign_points_to_centers(global_centers, data, assignments, data_start, data_end);
+    int changed = assign_points_to_centers(global_centers, data, assignments, data_start, data_end);
     auto local_centers = std::vector<std::vector<double>>(global_centers.size(),
                                                           std::vector<double>(global_centers[0].size(), 0));
     std::copy(global_centers.begin(), global_centers.end(), local_centers.begin());
     recompute_centers(local_centers, data, assignments, data_start, data_end);
     add_local_centers_to_global_ones(new_global_centers, local_centers);
-
-    return perf(data, data_start, data_end, (int) data[0].size());
+    return changed;
 }
 
 static inline void mean_global_centers(std::vector<std::vector<double>> &new_global_centers, int thread_count) {
@@ -170,16 +196,14 @@ int main(int argc, char **argv) {
     std::vector<std::vector<double>> centers = pick_random_centers(*data, args.k);
     auto new_global_centers = std::vector<std::vector<double>>(args.k, std::vector<double>(
             data->at(0).size(), 0));
-    double global_perf = 0;
-
     int dataset_size_per_thread = (int) data->size() / args.thread_count;
 
     while (true) {
         cycle_no++;
         new_global_centers = std::vector<std::vector<double>>(args.k, std::vector<double>(
                 data->at(0).size(), 0));
-        global_perf = 0;
-        // TODO: parallelize this
+        int changed = 0;
+#pragma omp parallel for thread_num(args.thread_count) reduction(+:changed) shared(new_global_centers, assignments)
         for (int t = 0; t < args.thread_count; t++) {
             int data_start = t * dataset_size_per_thread;
             int data_end = (t + 1) * dataset_size_per_thread;
@@ -189,24 +213,17 @@ int main(int argc, char **argv) {
                 data_end = (int) data->size();
             }
 
-            double local_perf = compute(centers, new_global_centers, assignments, *data, data_start, data_end);
-            global_perf += local_perf;
+            changed += compute(centers, new_global_centers, assignments, *data, data_start, data_end);
         }
 
-        std::cout << "Cycle #" << cycle_no << ": global_perf = " << global_perf << std::endl;
-        if (cycle_no >= 100) {
+//        double perf = compute_perf(*data, assignments, args.k, (int) data[0].size());
+
+        std::cout << "Cycle #" << cycle_no << ": changed = " << changed << std::endl;
+        if (changed == 0) {
             break;
         }
         mean_global_centers(new_global_centers, args.thread_count);
         centers = new_global_centers;
-        for (auto &center: centers) {
-            std::cout << "(";
-            for (double &j: center) {
-                std::cout << j << ", ";
-            }
-            std::cout << ") ";
-        }
-        std::cout << std::endl;
     }
 
     finish_time = omp_get_wtime(); // record finish time
