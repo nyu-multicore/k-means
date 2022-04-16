@@ -81,6 +81,7 @@ static inline void add_local_centers_to_global_ones(std::vector<std::vector<doub
                                                     std::vector<std::vector<double>> &local_centers) {
     for (int i = 0; i < (int) local_centers.size(); i++) {
         for (int j = 0; j < (int) local_centers[i].size(); j++) {
+#pragma omp critical
             global_centers[i][j] += local_centers[i][j];
         }
     }
@@ -203,7 +204,7 @@ int main(int argc, char **argv) {
         new_global_centers = std::vector<std::vector<double>>(args.k, std::vector<double>(
                 data->at(0).size(), 0));
         int changed = 0;
-#pragma omp parallel for thread_num(args.thread_count) reduction(+:changed) shared(new_global_centers, assignments)
+#pragma omp parallel for thread_num(args.thread_count) reduction(+:changed)
         for (int t = 0; t < args.thread_count; t++) {
             int data_start = t * dataset_size_per_thread;
             int data_end = (t + 1) * dataset_size_per_thread;
