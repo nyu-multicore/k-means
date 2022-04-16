@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include <unordered_set>
 #include <omp.h>
 #include "utils/parse_args.h"
@@ -87,80 +86,6 @@ static inline void add_local_centers_to_global_ones(std::vector<std::vector<doub
     }
 }
 
-static inline std::vector<double>
-first_moment(std::vector<std::vector<double>> &data, int start_index, int end_index, int dimension) {
-    auto FM = std::vector<double>(dimension, 0.0);
-
-    for (int i = start_index; i < end_index; i++) {
-        for (int j = 0; j < data[i].size(); j++) {
-            FM[j] += data[i][j];
-        }
-    }
-    return FM;
-}
-
-static inline std::vector<double>
-second_moment(std::vector<std::vector<double>> &data, int start_index, int end_index, int dimension) {
-    auto SM = std::vector<double>(dimension, 0.0);
-
-    for (int i = start_index; i < end_index; i++) {
-        for (int j = 0; j < dimension; j++) {
-            SM[j] += pow(data[i][j], 2);
-        }
-    }
-    return SM;
-}
-
-static inline std::vector<double>
-gCC(std::vector<std::vector<double>> &data, int start_index, int end_index, int dimension) {
-    int num_of_elements = end_index - start_index + 1;
-    std::vector<double> FM = first_moment(data, start_index, end_index, dimension);
-    std::vector<double> global_center = std::vector<double>(dimension, 0.0);
-    for (int i = 0; i < dimension; i++) {
-        global_center[i] = FM[i] / (double) num_of_elements;
-    }
-    return global_center;
-}
-
-static inline double
-compute_perf(std::vector<std::vector<double>> &data, std::vector<int> &assignments, int k, int dimension) {
-    std::vector<std::vector<double>> FMs = std::vector<std::vector<double>>(k,
-                                                                            std::vector<double>(dimension, 0.0));
-    std::vector<std::vector<double>> SMs = std::vector<std::vector<double>>(k,
-                                                                            std::vector<double>(dimension, 0.0));
-    std::vector<int> num_of_elements = std::vector<int>(k, 0);
-    printf("Computing performance...\n");
-    for (int i = 0; i < data.size(); i++) {
-        if (i % 100000 == 0) {
-            printf("loop1: %d\n", i);
-        }
-        auto point = data[i];
-        for (int j = 0; j < dimension; j++) {
-            FMs[assignments[i]][j] += point[j];
-            SMs[assignments[i]][j] += pow(point[j], 2);
-        }
-        num_of_elements[assignments[i]]++;
-    }
-    printf("loop1: finished\n");
-
-
-    double perf = 0.0;
-
-    for (int i = 0; i < k; i++) {
-        printf("loop2: %d\n", i);
-        double perf_c = 0.0;
-        for (int j = 0; j < dimension; j++) {
-            double perf_d = SMs[i][j] - pow(FMs[i][j], 2) / (double) num_of_elements[i];
-            if (std::isnan(perf_d)) {
-                perf_d = 0.0;
-            }
-            perf_c += perf_d;
-        }
-        perf += sqrt(perf_c);
-    }
-
-    return perf;
-}
 
 static inline int
 compute(std::vector<std::vector<double>> &global_centers, std::vector<std::vector<double>> &new_global_centers,
@@ -217,8 +142,6 @@ int main(int argc, char **argv) {
 
             changed += compute(centers, new_global_centers, assignments, *data, data_start, data_end);
         }
-
-//        double perf = compute_perf(*data, assignments, args.k, (int) data[0].size());
 
         std::cout << "Cycle #" << cycle_no << ": changed = " << changed << std::endl;
         if (changed == 0) {
