@@ -199,12 +199,14 @@ int main(int argc, char **argv) {
             data->at(0).size(), 0));
     int dataset_size_per_thread = (int) data->size() / args.thread_count;
 
+    omp_set_num_threads(args.thread_count);
+
     while (true) {
         cycle_no++;
         new_global_centers = std::vector<std::vector<double>>(args.k, std::vector<double>(
                 data->at(0).size(), 0));
         int changed = 0;
-#pragma omp parallel for thread_num(args.thread_count) reduction(+:changed)
+#pragma omp parallel for
         for (int t = 0; t < args.thread_count; t++) {
             int data_start = t * dataset_size_per_thread;
             int data_end = (t + 1) * dataset_size_per_thread;
