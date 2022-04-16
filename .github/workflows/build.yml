@@ -13,6 +13,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          lfs: true
+          submodules: "recursive"
 
       - name: Configure CMake
         run: cmake -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
