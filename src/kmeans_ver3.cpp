@@ -159,14 +159,15 @@ int main(int argc, char **argv) {
         datasubset.push_back(data->at(i));
     }
 
+    double start_time, finish_time;
+    start_time = omp_get_wtime(); // record start time
     std::vector<SetOfMeans*> setofmeans_vec;
     for(int i=0; i < 500; i++){
         SetOfMeans* current = new SetOfMeans(datasubset, args.k, args);
         setofmeans_vec.push_back(current);
     }
 
-    double start_time, finish_time;
-    start_time = omp_get_wtime(); // record start time
+
     #pragma omp parallel for num_threads(args.thread_count)
     for(int i=0; i < setofmeans_vec.size(); i++){
         setofmeans_vec[i]->process_iterations();
