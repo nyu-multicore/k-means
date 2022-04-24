@@ -80,5 +80,5 @@ data will be save to path `data/experiment_raw.csv`. The averaged data will be s
 ### To run only a specific version
 
 ```bash
-python3 scripts/exp.py -e kmeans_ver3
+python3 scripts/exp.py -e kmeans_par1
 ```
