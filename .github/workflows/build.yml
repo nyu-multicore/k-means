@@ -28,12 +28,12 @@ jobs:
         run: |
           echo "Running kmeans_seq..."
           cmake-build-release/kmeans_seq 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
-          echo "Running kmeans_ver3..."
-          cmake-build-release/kmeans_ver3 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
-          echo "Running kmeans_par1_1..."
-          cmake-build-release/kmeans_par1_1 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
-          echo "Running kmeans_par1_2..."
-          cmake-build-release/kmeans_par1_2 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par1..."
+          cmake-build-release/kmeans_par1 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par2..."
+          cmake-build-release/kmeans_par2 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par3..."
+          cmake-build-release/kmeans_par3 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_parakmeans..."
           cmake-build-release/kmeans_parakmeans 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
   
@@ -59,12 +59,12 @@ jobs:
         run: |
           echo "Running kmeans_seq..."
           cmake-build-release/Release/kmeans_seq.exe 1 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
-          echo "Running kmeans_ver3..."
-          cmake-build-release/Release/kmeans_ver3.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
-          echo "Running kmeans_par1_1..."
-          cmake-build-release/Release/kmeans_par1_1.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
-          echo "Running kmeans_par1_2..."
-          cmake-build-release/Release/kmeans_par1_2.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par1..."
+          cmake-build-release/Release/kmeans_par1.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par2..."
+          cmake-build-release/Release/kmeans_par2.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
+          echo "Running kmeans_par3..."
+          cmake-build-release/Release/kmeans_par3.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
           echo "Running kmeans_parakmeans..."
           cmake-build-release/Release/kmeans_parakmeans.exe 10 10 data/dataset-10000.txt data/dataset-10000.10.kmeans.txt
   
