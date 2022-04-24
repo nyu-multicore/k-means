@@ -35,6 +35,7 @@ This would build and generate different versions of executables in the folder `c
   computing_](https://ieeexplore.ieee.org/document/7322467)
 - kmeans_par1_1: parallel versions including the parallelization of the point assignments
 - kmeans_par1_2: parallel versions including the parallelization of the point assignments and center recompute
+- kmeans_parapkmeans: our proposed parallel implementation
 
 ## Executable Usage
 
