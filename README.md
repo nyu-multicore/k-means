@@ -2,6 +2,12 @@
 
 Parallel K-Means(H-Means) implementations in OpenMP.
 
+[GitHub Repo](https://github.com/nyu-multicore/k-means)
+
+## Datasets
+
+[Download](https://github.com/nyu-multicore/k-means/tree/main/data)
+
 ## Prerequisites
 
 - CMake 3.17+
