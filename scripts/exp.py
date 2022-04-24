@@ -6,7 +6,7 @@ import glob
 import re
 
 dataset_names = ['dataset-10000', 'dataset-100000', 'dataset-1000000', 'dataset-5000000', 'dataset-10000000']
-thread_counts = [1, 2, 5, 10, 50, 100]
+thread_counts = [1, 2, 5, 10, 25, 50, 100]
 thread_counts_disable_for_executables = ["kmeans_seq"]
 sample_times = 10
 n_clusters = [10]
