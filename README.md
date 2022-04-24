@@ -38,8 +38,10 @@ cmake --build cmake-build-release --config Release
 This would build and generate different versions of executables in the folder `cmake-build-release`.
 
 - kmeans_seq: basic sequential version
-- kmeans_par1: parallel versions including the parallelization of the point assignments, in Parallel k/h -Means Clustering for Large Data Sets
-- kmeans_par2: parallel versions including the parallelization of the point assignments and center recompute, in Parallel k/h -Means Clustering for Large Data Sets
+- kmeans_par1: parallel versions including the parallelization of the point assignments, in Parallel k/h -Means
+  Clustering for Large Data Sets
+- kmeans_par2: parallel versions including the parallelization of the point assignments and center recompute, in
+  Parallel k/h -Means Clustering for Large Data Sets
 - kmeans_par3: parallel implementation of [_Accelerating K-Means Clustering with Parallel Implementations and GPU
   computing_](https://ieeexplore.ieee.org/document/7322467)
 - kmeans_parakmeans: our proposed version.
@@ -67,7 +69,7 @@ Example:
 ```
 
 ```bash
-./cmake-build-release/kmeans 10 10 data/dataset-1000000.txt data/dataset-1000000.10.kmeans.txt
+./cmake-build-release/kmeans_par1 10 10 data/dataset-1000000.txt data/dataset-1000000.10.kmeans.txt
 ```
 
 ## Run Experiments on Datasets
