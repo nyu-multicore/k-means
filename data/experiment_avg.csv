@@ -1,0 +1,2 @@
+exec,dataset,n_cluster,threads,nmi,time
+kmeans_parakmeans,dataset-10000000,10,100,0.788964,13.138023
